@@ -41,12 +41,12 @@ def tile_on_click_func(tile_index):
                     return
                 cnt[tile_index] -= 1
                 text_ctrl.SetValue(count_to_tiles(cnt))
-            send_tiles_func(True)(event)
+            send_tiles_func(True, False)(event)
 
     return on_click
 
 
-def reset(event):
+def reset_on_click(event):
     global cnt, is_interact_mode
     is_interact_mode = False
 
@@ -57,13 +57,14 @@ def reset(event):
     panel.Refresh()
 
 
-def send_tiles_func(need_interact):
+def send_tiles_func(need_interact, reset):
     def send_tiles(event):
         global is_interact_mode, cnt
         try:
             # ~1s延迟
             # TODO: waiting circle
             resp = requests.post("http://localhost:12121/interact", json={
+                "reset": reset,
                 "tiles": text_ctrl.GetValue(),
                 "show_detail": sum(cnt) == 13,
             })
@@ -103,7 +104,7 @@ if __name__ == '__main__':
 
     text_ctrl = wx.TextCtrl(panel)
     reset_button = wx.Button(panel, label='重置')
-    reset_button.Bind(wx.EVT_BUTTON, reset)
+    reset_button.Bind(wx.EVT_BUTTON, reset_on_click)
 
     hbox = wx.BoxSizer()
     hbox.Add(text_ctrl, proportion=3, flag=wx.EXPAND)
@@ -120,11 +121,11 @@ if __name__ == '__main__':
         grid_buttons.append(button)
 
     analysis_button = wx.Button(panel, label='分析')
-    analysis_button.Bind(wx.EVT_BUTTON, send_tiles_func(False))
+    analysis_button.Bind(wx.EVT_BUTTON, send_tiles_func(False, True))
     grid_sizer.Add(analysis_button, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)
 
     interact_button = wx.Button(panel, label='交互\n分析')
-    interact_button.Bind(wx.EVT_BUTTON, send_tiles_func(True))
+    interact_button.Bind(wx.EVT_BUTTON, send_tiles_func(True, True))
     grid_sizer.Add(interact_button, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)
 
     vbox = wx.BoxSizer(wx.VERTICAL)
