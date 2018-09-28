@@ -2,12 +2,12 @@ import requests
 import wx
 import wx.lib.buttons as buts
 
-from utils import TILES, count_to_tiles
+from utils import TILES, count_to_tiles, tiles_to_count
 
 is_interact_mode = False
 
 # TODO: data binding
-cnt = [0] * 34
+cnt = [0] * len(TILES)
 
 
 def tile_on_click_func(tile_index):
@@ -50,7 +50,7 @@ def reset_on_click(event):
     global cnt, is_interact_mode
     is_interact_mode = False
 
-    cnt = [0] * 34
+    cnt = [0] * len(TILES)
     text_ctrl.Clear()
     for b in grid_buttons:
         b.Enabled = True
@@ -60,12 +60,18 @@ def reset_on_click(event):
 def send_tiles_func(need_interact, reset):
     def send_tiles(event):
         global is_interact_mode, cnt
+
+        tiles = text_ctrl.GetValue()
+        cnt = tiles_to_count(tiles)
+        if not cnt:
+            return False
+
         try:
             # ~1s延迟
             # TODO: waiting circle
             resp = requests.post("http://localhost:12121/interact", json={
                 "reset": reset,
-                "tiles": text_ctrl.GetValue(),
+                "tiles": tiles,
                 "show_detail": sum(cnt) == 13,
             })
         except ConnectionRefusedError as e:

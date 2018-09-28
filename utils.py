@@ -7,6 +7,10 @@ TILES = [
 
 
 def count_to_tiles(cnt):
+    if len(cnt) != len(TILES):
+        print("cnt 长度必须为", len(TILES))
+        return ""
+
     tiles = ""
     for i, type_ in enumerate(['m', 'p', 's', 'z']):
         wrote = False
@@ -20,3 +24,31 @@ def count_to_tiles(cnt):
         if wrote:
             tiles += type_ + " "
     return tiles.strip()
+
+
+def tiles_to_count(tiles):
+    tiles = tiles.strip()
+    if tiles == "":
+        print("参数错误: 处理的手牌不能为空")
+        return []
+
+    cnt = [0] * len(TILES)
+
+    for split in tiles.split():
+        split = split.strip()
+        if len(split) <= 1:
+            print("参数错误:", split)
+            return []
+        for c in split[:-1]:
+            tile = c + split[-1]
+            try:
+                index = TILES.index(tile)
+            except ValueError:
+                print("参数错误:", tile)
+                return []
+            cnt[index] += 1
+            if cnt[index] > 4:
+                print("参数错误: 超过4张一样的牌")
+                return []
+
+    return cnt
