@@ -69,7 +69,7 @@ def send_tiles_func(need_interact, reset):
 
         try:
             # ~1s延迟
-            # TODO: waiting circle
+            # TODO: add waiting circle animation
             resp = requests.post("http://localhost:12121/interact", json={
                 "reset": reset,
                 "tiles": tiles,
