@@ -109,8 +109,11 @@ def send_tiles_func(need_interact, reset):
 
 if __name__ == '__main__':
     app = wx.App()
+
+    # 默认显示在屏幕右下
     w, h = 600, 480
-    frame = wx.Frame(None, title='日麻辅助', size=(w, h), pos=(1920 - w + 10, 1080 - h))
+    screen_width, screen_height = wx.GetDisplaySize()
+    frame = wx.Frame(None, title='日麻辅助', size=(w, h), pos=(screen_width - w, screen_height - h))
     panel = wx.Panel(frame)
 
     # TODO: 撤销按钮
