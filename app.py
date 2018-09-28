@@ -95,7 +95,12 @@ def send_tiles_func(need_interact, reset):
                 # 需要切牌
                 for i, b in enumerate(grid_buttons):
                     b.Enabled = cnt[i] > 0
-            panel.Refresh()
+
+        else:
+            for i, b in enumerate(grid_buttons):
+                b.Enabled = cnt[i] < 4
+
+        panel.Refresh()
 
         return True
 
@@ -104,12 +109,15 @@ def send_tiles_func(need_interact, reset):
 
 if __name__ == '__main__':
     app = wx.App()
-    frame = wx.Frame(None, title='日麻辅助', size=(600, 480))
+    w, h = 600, 480
+    frame = wx.Frame(None, title='日麻辅助', size=(w, h), pos=(1920 - w + 10, 1080 - h))
     panel = wx.Panel(frame)
 
     # TODO: 撤销按钮
 
     text_ctrl = wx.TextCtrl(panel)
+    # TODO: 监听变化
+
     reset_button = wx.Button(panel, label='重置')
     reset_button.Bind(wx.EVT_BUTTON, reset_on_click)
 
