@@ -62,9 +62,10 @@ def send_tiles_func(need_interact, reset):
         global is_interact_mode, cnt
 
         tiles = text_ctrl.GetValue()
-        cnt = tiles_to_count(tiles)
-        if not cnt:
+        _cnt = tiles_to_count(tiles)
+        if not _cnt:
             return False
+        cnt = _cnt
 
         try:
             # ~1s延迟
