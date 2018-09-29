@@ -10,6 +10,13 @@ is_interact_mode = False
 cnt = [0] * len(TILES)
 
 
+def on_text_change(event):
+    global cnt
+    new_cnt = tiles_to_count(event.String)
+    if new_cnt:
+        cnt = new_cnt
+
+
 def tile_on_click_func(tile_index):
     def on_click(event):
         global is_interact_mode, cnt
@@ -119,7 +126,7 @@ if __name__ == '__main__':
     # TODO: 撤销按钮
 
     text_ctrl = wx.TextCtrl(panel)
-    # TODO: 监听变化
+    frame.Bind(wx.EVT_TEXT, on_text_change, text_ctrl)
 
     reset_button = wx.Button(panel, label='重置')
     reset_button.Bind(wx.EVT_BUTTON, reset_on_click)
