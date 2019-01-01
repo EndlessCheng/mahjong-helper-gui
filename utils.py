@@ -29,7 +29,6 @@ def count_to_tiles(cnt):
 def tiles_to_count(tiles):
     tiles = tiles.strip()
     if tiles == "":
-        print("参数错误: 处理的手牌不能为空")
         return []
 
     cnt = [0] * len(TILES)
