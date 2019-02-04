@@ -70,7 +70,7 @@ def send_tiles_func(need_interact, reset):
 
         tiles = text_ctrl.GetValue()
         _cnt = tiles_to_count(tiles)
-        if not _cnt:
+        if not _cnt or not 13 <= sum(cnt) <= 14:
             return False
         cnt = _cnt
 
@@ -80,7 +80,7 @@ def send_tiles_func(need_interact, reset):
             resp = requests.post("http://localhost:12121/analysis", json={
                 "reset": reset,
                 "tiles": tiles,
-                "show_detail": sum(cnt) == 13,
+                "show_detail": False,  # sum(cnt) == 13
             })
         except ConnectionRefusedError as e:
             print("未连接上服务器", e)
