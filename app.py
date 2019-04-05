@@ -36,7 +36,7 @@ def tile_on_click_func(tile_index):
                     b.Enabled = False
                 panel.Refresh()
         else:
-            if sum(cnt) < 14:
+            if sum(cnt) % 3 != 2:
                 # 摸牌
                 if cnt[tile_index] == 4:
                     return
@@ -70,7 +70,7 @@ def send_tiles_func(need_interact, reset):
 
         tiles = text_ctrl.GetValue()
         _cnt = tiles_to_count(tiles)
-        if not _cnt or not 13 <= sum(cnt) <= 14:
+        if not _cnt:
             return False
         cnt = _cnt
 
